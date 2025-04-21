@@ -1,8 +1,6 @@
-import sys
+from telegram.ext import ApplicationBuilder
 
-from telegram.ext import ApplicationBuilder, CommandHandler
-
-from core.presentation.command_setup import setup_bot_commands, register_commands
+from core.presentation.commands.command_setup import setup_bot_commands, register_commands
 from app.config import BOT_TOKEN
 from app.service_container import ServiceContainer
 from app.dao_container import DaoContainer
@@ -16,12 +14,12 @@ def start_application():
     dao_container = DaoContainer()
 
     service_container.wire(modules=[
-        "core.presentation.handlers.help_handler",
-        "core.presentation.handlers.register_handler",
+        "core.presentation.handlers.utils",
+        "core.presentation.handlers.users",
     ])
 
     dao_container.wire(modules=[
-        "core.services.user_services"
+        "core.services.user_services",
     ])
 
     app = ApplicationBuilder().token(BOT_TOKEN).post_init(post_init).build()

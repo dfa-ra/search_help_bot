@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
-from core.services.help_service import HelpService
-from core.services.user_services import RegisterService
+from core.services import *
+
 
 class ServiceContainer(containers.DeclarativeContainer):
     help_service = providers.Factory(
@@ -9,4 +9,7 @@ class ServiceContainer(containers.DeclarativeContainer):
     )
     register_service = providers.Factory(
         RegisterService,
+    )
+    user_info_service = providers.Factory(
+        UserInfoService,
     )

@@ -17,4 +17,4 @@ async def register_handler(
     result = await register_service.execute(user)
 
     if result.is_failure():
-        await update.message.reply_text("Данный пользователь уже зарегестрирован")
+        await update.message.reply_text(result.message)

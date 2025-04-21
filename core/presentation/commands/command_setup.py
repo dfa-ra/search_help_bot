@@ -1,6 +1,6 @@
 from telegram.ext import CommandHandler
 
-from core.presentation.commands_registry import get_bot_commands, get_bot_commands_func
+from core.presentation.commands.commands_registry import get_bot_commands, get_bot_commands_func
 
 def register_commands(app):
     commands = get_bot_commands_func()

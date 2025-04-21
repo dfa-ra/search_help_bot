@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from app.service_container import ServiceContainer
-from core.presentation.command_list import commands
+from core.presentation.commands.command_lists import get_list_command
 from core.services.help_service import HelpService
 
 
@@ -13,5 +13,5 @@ async def help_handler(
         context: ContextTypes.DEFAULT_TYPE,
         help_service: HelpService = Provide[ServiceContainer.help_service]
 ):
-    text = help_service.execute(commands=commands)
+    text = help_service.execute(commands=get_list_command())
     await update.message.reply_text(text)

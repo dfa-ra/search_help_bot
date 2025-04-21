@@ -20,4 +20,4 @@ class RegisterService:
                 await user_dao.create_user(user)
                 return CompletableResult.ok()
             except IntegrityError as e:
-                return CompletableResult.fail(e)
+                return CompletableResult.fail(e, "Данный пользователь уже зарегестрирован")
