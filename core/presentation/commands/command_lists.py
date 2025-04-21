@@ -19,6 +19,17 @@ class UserCommandsList:
         ("who_am_i", "Узнать информацию о себе"),
     ]
 
+@dataclass
+class RequestsCommandsList:
+    commands_name = "\n\n # Команды взаимодействия с заявками\n\n"
+    commands = [
+        ("create_request", "Создать заявку по id"),
+        ("close_request", "Закрыть заявку по id"),
+        ("show_requests", "Показать все открытые заявки"),
+        ("show_my_requests", "Показать мои заявки"),
+        ("delete_request", "Удалить заявку"),
+        ("select_request", "Выбрать заявку для выполнения"),
+    ]
 
 @dataclass
 class BotCommands:
@@ -26,10 +37,12 @@ class BotCommands:
 
 
 def get_bot_command():
-    return BotCommands(UtilsCommandsList.commands + UserCommandsList.commands)
+    return BotCommands(UtilsCommandsList.commands + UserCommandsList.commands + RequestsCommandsList.commands)
 
 
 def get_list_command():
     return [
         UtilsCommandsList.commands_name, UtilsCommandsList.commands,
-        UserCommandsList.commands_name, UserCommandsList.commands]
+        UserCommandsList.commands_name, UserCommandsList.commands,
+        RequestsCommandsList.commands_name, RequestsCommandsList.commands
+    ]

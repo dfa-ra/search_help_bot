@@ -14,7 +14,16 @@ users_handler_mapping = {
     "who_am_i": info_handler
 }
 
-handler_mapping = users_handler_mapping | utils_handler_mapping
+requests_handler_mapping = {
+    "create_request": create_requests_handler,
+    "close_request": close_request_handler,
+    "show_requests": show_all_open_requests_handler,
+    "show_my_requests": show_user_requests_handler,
+    "delete_request": delete_request_handler,
+    "select_request": add_request_executor_handler
+}
+
+handler_mapping = users_handler_mapping | utils_handler_mapping | requests_handler_mapping
 
 
 def get_bot_commands_func() -> List[Tuple[BotCommand, Callable]]:
