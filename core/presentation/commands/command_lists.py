@@ -6,7 +6,7 @@ from typing import Tuple, List
 class UtilsCommandsList:
     commands_name = "\n\n # Команды взаибодействия с ботом\n\n"
     commands = [
-        ("start", "Запуск бота"),
+        ("start", "Запуск бота (информация о боте)"),
         ("help", "Помощь"),
     ]
 
@@ -25,8 +25,10 @@ class RequestsCommandsList:
     commands = [
         ("create_request", "Создать заявку по id"),
         ("close_request", "Закрыть заявку по id"),
+        ("open_request", "Открыть заявку по id"),
         ("show_requests", "Показать все открытые заявки"),
         ("show_my_requests", "Показать мои заявки"),
+        ("show_my_selected_requests", "Показать заявки которые я выполняю"),
         ("delete_request", "Удалить заявку"),
         ("select_request", "Выбрать заявку для выполнения"),
     ]

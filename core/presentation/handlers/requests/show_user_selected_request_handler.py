@@ -4,17 +4,17 @@ from telegram.ext import ContextTypes
 
 from app.service_container import ServiceContainer
 from core.common import CompletableRequestsResult
-from core.services import DrawRequestService, ShowMyRequestsService
+from core.services import DrawRequestService, ShowMySelectedRequestsService
 
 
 @inject
-async def show_user_requests_handler(
+async def show_user_selected_requests_handler(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE,
-        show_my_requests_service: ShowMyRequestsService = Provide[ServiceContainer.show_my_requests_service],
+        show_my_selected_requests_service: ShowMySelectedRequestsService = Provide[ServiceContainer.show_my_selected_requests_service],
         draw_request_service: DrawRequestService = Provide[ServiceContainer.draw_request_service],
 ):
-    requests: CompletableRequestsResult = await show_my_requests_service.execute(update.effective_user.id)
+    requests: CompletableRequestsResult = await show_my_selected_requests_service.execute(update.effective_user.id)
     if requests.is_success():
         print(requests)
         for request in requests.list:

@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
+from db.config import async_session_factory
 
 from core.dao import *
-from db.config import async_session_factory
 
 
 class DaoContainer(containers.DeclarativeContainer):

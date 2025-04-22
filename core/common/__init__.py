@@ -1,1 +1,2 @@
 from core.common.completable_result import CompletableResult
+from core.common.completable_requests_result import CompletableRequestsResult

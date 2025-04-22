@@ -9,17 +9,23 @@ from app.dao_container import DaoContainer
 async def post_init(app):
     await setup_bot_commands(app.bot)
 
+
 def start_application():
-    service_container = ServiceContainer()
     dao_container = DaoContainer()
+
+    service_container = ServiceContainer(
+
+    )
+
+    dao_container.wire(modules=[
+        "core.services.user_services",
+        "core.services.requests_service",
+    ])
 
     service_container.wire(modules=[
         "core.presentation.handlers.utils",
         "core.presentation.handlers.users",
-    ])
-
-    dao_container.wire(modules=[
-        "core.services.user_services",
+        "core.presentation.handlers.requests",
     ])
 
     app = ApplicationBuilder().token(BOT_TOKEN).post_init(post_init).build()

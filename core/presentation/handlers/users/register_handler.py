@@ -4,7 +4,7 @@ from telegram.ext import ContextTypes
 
 from app.service_container import ServiceContainer
 from core.models import User
-from core.services.user_services import RegisterService
+from core.services import RegisterService
 
 
 @inject

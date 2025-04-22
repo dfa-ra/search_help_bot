@@ -1,11 +1,18 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-user = "roma"
-password = "1122"
-host = "localhost"
-port = "5432"
-database = "test_my_tg_bot"
+env_path = Path(__file__).resolve().parents[1] / '.env'
+load_dotenv(dotenv_path=env_path)
+
+user = os.getenv("DB_USER")
+password = os.getenv("DB_PASSWORD")
+host = os.getenv("DB_HOST")
+port = os.getenv("DB_PORT")
+database = os.getenv("DB_DATABASE")
 
 DB_URL = f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
 
