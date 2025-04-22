@@ -1,17 +1,16 @@
 from typing import List, Tuple, Callable
 from telegram import BotCommand
-from telegram.ext import ConversationHandler, CommandHandler, filters, MessageHandler
+from telegram.ext import  CommandHandler, filters, MessageHandler
 
 from core.presentation.handlers import *
 from core.presentation.commands.command_lists import get_bot_command, get_list_command
 
 utils_handler_mapping = {
-    "start": start_handler,
+    "start": register_handler,
     "help": help_handler,
 }
 
 users_handler_mapping = {
-    "register": register_handler,
     "who_am_i": info_handler
 }
 
@@ -37,6 +36,15 @@ message_handler_mapping = [
             MONEY: [MessageHandler(filters.TEXT & ~filters.COMMAND, money_handler)],
         },
         fallbacks=[],
+    ),
+    ConversationHandler(
+        entry_points=[CommandHandler('add_information', add_information_handler)],
+        states={
+            UNIVERSITY: [MessageHandler(filters.TEXT & ~filters.COMMAND, add_university_handler)],
+            COURSE: [MessageHandler(filters.TEXT & ~filters.COMMAND, add_course_handler)],
+            DIRECTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, add_direction_handler)],
+        },
+        fallbacks=[CommandHandler("cancel", cancel_handler)],
     )
 ]
 

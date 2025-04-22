@@ -15,7 +15,7 @@ class UtilsCommandsList:
 class UserCommandsList:
     commands_name = "\n\n # Команды взаимодействия с полезователем\n\n"
     commands = [
-        ("register", "Зарегистрироваться в систему"),
+        ("add_information", "Добавить информацию о себе"),
         ("who_am_i", "Узнать информацию о себе"),
     ]
 
@@ -23,7 +23,7 @@ class UserCommandsList:
 class RequestsCommandsList:
     commands_name = "\n\n # Команды взаимодействия с заявками\n\n"
     commands = [
-        ("create_request", "Создать заявку по id"),
+        ("create_request", "Создать заявку"),
         ("close_request", "Закрыть заявку по id"),
         ("open_request", "Открыть заявку по id"),
         ("show_requests", "Показать все открытые заявки"),

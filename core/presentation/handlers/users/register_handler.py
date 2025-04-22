@@ -18,3 +18,9 @@ async def register_handler(
 
     if result.is_failure():
         await update.message.reply_text(result.message)
+        str = f"Привет {update.effective_user.first_name}\n"
+        await update.message.reply_text(str)
+    else:
+        str = (f"Привет {update.effective_user.first_name}"
+               f"Пупупу, произошло что-то странное попробуй ещё раз\n")
+        await update.message.reply_text(str)

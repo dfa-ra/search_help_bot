@@ -16,6 +16,9 @@ class ServiceContainer(containers.DeclarativeContainer):
     user_info_service = providers.Factory(
         UserInfoService,
     )
+    add_info_user = providers.Factory(
+        AddInfoService,
+    )
 
     # request
     create_request_service = providers.Factory(

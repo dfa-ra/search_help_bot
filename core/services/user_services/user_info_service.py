@@ -17,8 +17,11 @@ class UserInfoService:
             user_dao = UserDao(session)
             user = await user_dao.get_by_id(telegram_id)
             if user is not None:
-                text = (f"id: {user.telegram_id}\n"
-                        f"name: {user.name}")
+                text = (f"Вот это ты если чё\n\n"
+                        f"Имя: {user.name}\n"
+                        f"Университет: {user.university}\n"
+                        f"Курс: {user.course}\n"
+                        f"Направление: {user.direction}")
                 return CompletableResult.ok(text)
             else:
                 text = f"Пользователь не найден"
