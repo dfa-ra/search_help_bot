@@ -1,0 +1,5 @@
+python-telegram-bot==22.0
+SQLAlchemy==2.0.40
+dependency-injector==4.46.0
+python-dotenv==1.0.1
+typing_extensions==4.12.2

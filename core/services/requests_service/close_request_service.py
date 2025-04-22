@@ -1,10 +1,9 @@
 from dependency_injector.wiring import inject
-from sqlalchemy.exc import IntegrityError
 
 from app.dao_container import DaoContainer
 from core.common import CompletableResult
 from core.dao import RequestDao
-from core.models import Request
+
 
 
 class CloseRequestService:
