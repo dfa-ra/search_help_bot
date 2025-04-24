@@ -4,7 +4,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 
 from app.service_container import ServiceContainer
 from core.models import Request
-from core.services import CreateRequestService
+from core.services import CreateRequestService, IsIntegerService
 
 TOPIC, MAIN_TEXT, DEADLINE, MONEY = range(4)
 
@@ -43,9 +43,23 @@ async def deadline_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def money_handler(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE,
-        create_request_service: CreateRequestService = Provide[ServiceContainer.create_request_service]
+        create_request_service: CreateRequestService = Provide[ServiceContainer.create_request_service],
+        is_integer_service: IsIntegerService = Provide[ServiceContainer.is_integer_service],
 ):
-    context.user_data["request"].money = int(update.message.text.lower())
+    try:
+        context.user_data["request"].money = int(update.message.text.lower())
+    except ValueError:
+        await update.message.reply_text("Братец введи число... ну по братски😭")
+        return MONEY
+
+    if context.user_data["request"].money <= 0:
+        await update.message.reply_text("Число должно быть больше нуля🤡")
+        return MONEY
+
+    if context.user_data["request"].money >= 1_000_000:
+        await update.message.reply_text("Ты рофлишь?? больше миллиона.. давай ка скинь маленько")
+        return MONEY
+
 
     request = context.user_data["request"]
     request.creator_id = update.effective_user.id
@@ -55,5 +69,6 @@ async def money_handler(
 
     await update.message.reply_text(result.message)
 
+    await update.message.reply_text(result.message)
     del context.user_data["request"]
     return ConversationHandler.END

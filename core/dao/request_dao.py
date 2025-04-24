@@ -1,6 +1,8 @@
 from sqlalchemy import select, func
+from sqlalchemy.dialects.postgresql import asyncpg
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.common.CustomErrors import ItsSoBigForIntegerError
 from core.models import Request
 
 
@@ -10,12 +12,21 @@ class RequestDao:
 
     async def create_request(self, request: Request):
         self.session.add(request)
-        await self.session.commit()
-        return request
+        try:
+            await self.session.commit()
+            return request
+        except asyncpg.exceptions.DataError as e:
+            if "value out of int32 range" in str(e):
+                print("Слишком большое число! Не влезает в базу.")
+                raise ItsSoBigForIntegerError("Слишком большое число! Не влезает в базу.")
+            raise
 
-    async def get_all_open_requests(self):
+    async def get_all_open_requests(self, telegram_id):
         result = await self.session.execute(
-            select(Request).where(Request.is_open == True)
+            select(Request).where(
+                (Request.is_open == True) &
+                (Request.creator_id != telegram_id)
+            )
         )
         return result.scalars().all()
 
@@ -43,6 +54,21 @@ class RequestDao:
 
         if request:
             request.executor_id = executor_id
+            await self.session.commit()
+            return request
+        return None
+
+    async def add_file_id_for_requests(self, id: int, telegram_id: int, file_id: str):
+        result = await self.session.execute(
+            select(Request).where(
+                (Request.id == id) &
+                (Request.creator_id != telegram_id)  # или (Request.executor_id == None)
+            )
+        )
+        request = result.scalar_one_or_none()
+
+        if request:
+            request.file_id = file_id
             await self.session.commit()
             return request
         return None

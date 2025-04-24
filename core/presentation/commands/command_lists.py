@@ -24,11 +24,12 @@ class RequestsCommandsList:
     commands_name = "\n\n # Команды взаимодействия с заявками\n\n"
     commands = [
         ("create_request", "Создать заявку"),
-        ("close_request", "Закрыть заявку по id"),
-        ("open_request", "Открыть заявку по id"),
+        ("close_request", "Закрыть свою заявку по id"),
+        ("open_request", "Открыть свою заявку по id"),
         ("show_requests", "Показать все открытые заявки"),
         ("show_my_requests", "Показать мои заявки"),
         ("show_my_selected_requests", "Показать заявки которые я выполняю"),
+        ("requests_brainrot", "Показывать заявки в виде ленты"),
         ("delete_request", "Удалить заявку"),
         ("select_request", "Выбрать заявку для выполнения"),
     ]

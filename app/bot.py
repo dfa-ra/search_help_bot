@@ -20,6 +20,7 @@ def start_application():
     dao_container.wire(modules=[
         "core.services.user_services",
         "core.services.requests_service",
+        "core.services.utils_service",
     ])
 
     service_container.wire(modules=[

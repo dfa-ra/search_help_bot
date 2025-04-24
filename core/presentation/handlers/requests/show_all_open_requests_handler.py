@@ -14,7 +14,7 @@ async def show_all_open_requests_handler(
         show_all_open_requests_service: ShowAllOpenRequestsService = Provide[ServiceContainer.show_all_open_requests_service],
         draw_request_service: DrawRequestService = Provide[ServiceContainer.draw_request_service],
 ):
-    requests: CompletableRequestsResult = await show_all_open_requests_service.execute()
+    requests: CompletableRequestsResult = await show_all_open_requests_service.execute(update.effective_user.id)
     if requests.is_success():
         print(requests)
         for request in requests.list:

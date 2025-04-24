@@ -4,9 +4,12 @@ from core.services import *
 
 
 class ServiceContainer(containers.DeclarativeContainer):
-    # utils
+    # utils_service
     help_service = providers.Factory(
         HelpService,
+    )
+    is_integer_service = providers.Factory(
+        IsIntegerService
     )
 
     # user

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from sqlalchemy import Column, Integer, String, Boolean
 
-from db.base import Base
+from db.postgress.base import Base
 
 
 @dataclass
@@ -17,4 +17,6 @@ class Request(Base):
     deadline = Column(String, nullable=False)
     money = Column(Integer, nullable=False)
     is_open = Column(Boolean, nullable=False)
+
+    file_id = Column(String, nullable=True)
 

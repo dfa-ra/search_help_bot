@@ -3,7 +3,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-env_path = Path(__file__).resolve().parents[1] / '.env'
-load_dotenv(dotenv_path=env_path)
+load_dotenv(dotenv_path="/media/ra/_work/ra/QUESTIONABLE PROJECTS/help_search_bot/.env")
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")

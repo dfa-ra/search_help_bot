@@ -13,11 +13,10 @@ class RegisterService:
     async def execute(
             self,
             user: User,
+            user_dao: UserDao = Provide[DaoContainer.user_dao],
     ) -> CompletableResult:
-        async with DaoContainer.session() as session:
-            user_dao = UserDao(session)
-            try:
-                await user_dao.create_user(user)
-                return CompletableResult.ok()
-            except IntegrityError as e:
-                return CompletableResult.fail(e, "Данный пользователь уже зарегестрирован")
+        try:
+            await user_dao.create_user(user)
+            return CompletableResult.ok()
+        except IntegrityError as e:
+            return CompletableResult.fail(e, "Данный пользователь уже зарегестрирован")

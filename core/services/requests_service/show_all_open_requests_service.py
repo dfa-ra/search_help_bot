@@ -10,14 +10,14 @@ class ShowAllOpenRequestsService:
 
     @inject
     async def execute(
-            self
+            self,
+            telegram_id: int,
+            requests_dao: RequestDao = Provide[DaoContainer.requests_dao],
     ) -> CompletableRequestsResult:
-        async with DaoContainer.session() as session:
-            requests_dao = RequestDao(session)
-            request = await requests_dao.get_all_open_requests()
-            if request is not []:
-                print(request)
-                return CompletableRequestsResult.ok(list=request)
-            else:
-                text = f"Нету открытых заявок"
-                return CompletableRequestsResult.fail(Exception(), text)
+        request = await requests_dao.get_all_open_requests(telegram_id)
+        if request is not []:
+            print(request)
+            return CompletableRequestsResult.ok(list=request)
+        else:
+            text = f"Нету открытых заявок"
+            return CompletableRequestsResult.fail(Exception(), text)

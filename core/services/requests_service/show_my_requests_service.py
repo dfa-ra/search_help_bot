@@ -11,14 +11,13 @@ class ShowMyRequestsService:
     @inject
     async def execute(
             self,
-            telegram_id: int
+            telegram_id: int,
+            requests_dao: RequestDao = Provide[DaoContainer.requests_dao],
     ) -> CompletableRequestsResult:
-        async with DaoContainer.session() as session:
-            requests_dao = RequestDao(session)
-            request = await requests_dao.get_request_by_creator_id(telegram_id)
-            if request is not []:
-                print(request)
-                return CompletableRequestsResult.ok(list=request)
-            else:
-                text = f"Нету ваших заявок"
-                return CompletableRequestsResult.fail(Exception(), text)
+        request = await requests_dao.get_request_by_creator_id(telegram_id)
+        if request is not []:
+            print(request)
+            return CompletableRequestsResult.ok(list=request)
+        else:
+            text = f"Нету ваших заявок"
+            return CompletableRequestsResult.fail(Exception(), text)

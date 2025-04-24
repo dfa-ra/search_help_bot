@@ -4,7 +4,7 @@ from telegram.ext import ContextTypes
 
 from app.service_container import ServiceContainer
 from core.presentation.commands.command_lists import get_list_command
-from core.services.help_service import HelpService
+from core.services import HelpService
 
 
 @inject

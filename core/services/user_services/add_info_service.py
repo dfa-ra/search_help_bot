@@ -15,12 +15,11 @@ class AddInfoService:
             telegram_id: int,
             university: str,
             course: int,
-            direction: str
+            direction: str,
+            user_dao: UserDao = Provide[DaoContainer.user_dao],
     ) -> CompletableResult:
-        async with DaoContainer.session() as session:
-            user_dao = UserDao(session)
-            try:
-                await user_dao.add_user_info(telegram_id, university, course, direction)
-                return CompletableResult.ok(message=" # Спасибо за информацию о себе!")
-            except Exception as e:
-                return CompletableResult.fail(e, "!! Возникли неполадки с добавлением информации")
+        try:
+            await user_dao.add_user_info(telegram_id, university, course, direction)
+            return CompletableResult.ok(message=" # Спасибо за информацию о себе!")
+        except Exception as e:
+            return CompletableResult.fail(e, "!! Возникли неполадки с добавлением информации")

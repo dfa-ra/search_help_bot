@@ -1,6 +1,6 @@
 from typing import List, Tuple, Callable
 from telegram import BotCommand
-from telegram.ext import  CommandHandler, filters, MessageHandler
+from telegram.ext import CommandHandler, filters, MessageHandler, CallbackQueryHandler
 
 from core.presentation.handlers import *
 from core.presentation.commands.command_lists import get_bot_command, get_list_command
@@ -20,6 +20,7 @@ requests_handler_mapping = {
     "show_requests": show_all_open_requests_handler,
     "show_my_requests": show_user_requests_handler,
     "show_my_selected_requests": show_user_selected_requests_handler,
+    "requests_brainrot": requests_brainrot_handler,
     "delete_request": delete_request_handler,
     "select_request": add_request_executor_handler
 }
@@ -45,8 +46,12 @@ message_handler_mapping = [
             DIRECTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, add_direction_handler)],
         },
         fallbacks=[CommandHandler("cancel", cancel_handler)],
-    )
+    ),
+    MessageHandler(filters.TEXT & ~filters.COMMAND, request_brainrot_button_handle)
+
 ]
+
+
 
 
 def get_list_message_handler():
