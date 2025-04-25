@@ -33,20 +33,10 @@ async def check_collection():
     except Exception as e:
         print(f"Ошибка при поиске в коллекции: {e}")
 
-async def test_insert():
-    try:
-        # Пример документа для вставки
-        test_document = {"file_name": "test_file.txt", "mime_type": "text/plain", "file_bytes": b"test content"}
-        result = await files_collection.insert_one(test_document)
-        print(f"Документ вставлен с ID: {result.inserted_id}")
-    except Exception as e:
-        print(f"Ошибка при вставке документа: {e}")
-
 
 async def main():
     await check_connection()
     await check_collection()
-    await test_insert()
 
 if __name__ == "__main__":
     asyncio.run(main())
