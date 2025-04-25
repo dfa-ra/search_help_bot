@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from core.common.CustomErrors import ErrorTypes
+from core.common.custom_errors import ErrorTypes
 
 
 @dataclass
@@ -9,7 +9,7 @@ class CompletableResult:
     success: bool
     message: Optional[str] = None
     error: Optional[Exception] = None
-    error_type: int = None
+    error_type: Optional[int] = None
 
     @staticmethod
     def ok(message: str = ""):

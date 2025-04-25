@@ -2,7 +2,7 @@ from sqlalchemy import select, func
 from sqlalchemy.dialects.postgresql import asyncpg
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.common.CustomErrors import ItsSoBigForIntegerError
+from core.common.custom_errors import ItsSoBigForIntegerError
 from core.models import Request
 
 
@@ -42,6 +42,12 @@ class RequestDao:
         )
         return result.scalars().all()
 
+    async def get_request_file_id(self, id: int):
+        result = await self.session.execute(
+            select(Request).where(Request.id == id)
+        )
+        return result.scalar_one_or_none()
+
     async def add_executor_for_requests(self, id: int, executor_id: int):
         result = await self.session.execute(
             select(Request).where(
@@ -62,7 +68,7 @@ class RequestDao:
         result = await self.session.execute(
             select(Request).where(
                 (Request.id == id) &
-                (Request.creator_id != telegram_id)  # или (Request.executor_id == None)
+                (Request.creator_id == telegram_id)
             )
         )
         request = result.scalar_one_or_none()

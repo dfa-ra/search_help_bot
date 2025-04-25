@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from app.service_container import ServiceContainer
-from core.common import CompletableRequestsResult
+from core.common.completable import CompletableRequestsResult
 from core.services import DrawRequestService, ShowMySelectedRequestsService
 
 

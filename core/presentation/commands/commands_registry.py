@@ -27,12 +27,14 @@ requests_handler_mapping = {
 
 handler_mapping = users_handler_mapping | utils_handler_mapping | requests_handler_mapping
 
+
 message_handler_mapping = [
     ConversationHandler(
         entry_points=[CommandHandler('create_request', create_requests_handler)],
         states={
             TOPIC: [MessageHandler(filters.TEXT & ~filters.COMMAND, topic_handler)],
             MAIN_TEXT: [MessageHandler(filters.TEXT & ~filters.COMMAND, main_text_handler)],
+            FILE_DESCRIPTION: [MessageHandler(filters.TEXT | filters.Document.ALL, description_handler)],
             DEADLINE: [MessageHandler(filters.TEXT & ~filters.COMMAND, deadline_handler)],
             MONEY: [MessageHandler(filters.TEXT & ~filters.COMMAND, money_handler)],
         },
@@ -50,9 +52,6 @@ message_handler_mapping = [
     MessageHandler(filters.TEXT & ~filters.COMMAND, request_brainrot_button_handle)
 
 ]
-
-
-
 
 def get_list_message_handler():
     return message_handler_mapping

@@ -4,7 +4,7 @@ from core.services import *
 
 
 class ServiceContainer(containers.DeclarativeContainer):
-    # utils_service
+    # utils
     help_service = providers.Factory(
         HelpService,
     )
@@ -51,5 +51,12 @@ class ServiceContainer(containers.DeclarativeContainer):
     open_my_request_service = providers.Factory(
         OpenRequestService,
     )
+    save_request_file_service = providers.Factory(
+        SaveRequestFileService
+    )
+    get_request_file_service = providers.Factory(
+        GetRequestFileByIdService
+    )
+
 
 

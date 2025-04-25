@@ -16,4 +16,4 @@ class DaoContainer(containers.DeclarativeContainer):
 
     user_dao = providers.Factory(UserDao, session=session)
     requests_dao = providers.Factory(RequestDao, session=session)
-    mongo_dao = providers.Factory(MongoDAO, collection=collection)
+    mongo_dao = providers.Factory(MongoDao, collection=collection)

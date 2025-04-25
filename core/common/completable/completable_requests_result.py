@@ -7,13 +7,14 @@ from core.models import Request
 @dataclass
 class CompletableRequestsResult:
     success: bool
-    list: List[Request]
+    request: Optional[Request] = None
+    list: List[Request] = None
     message: Optional[str] = None
     error: Optional[Exception] = None
 
     @staticmethod
-    def ok(message: str = "", list: List[Request] = None, success: bool = True):
-        return CompletableRequestsResult(success=True, message=message, list=list)
+    def ok(message: str = "", list: List[Request] = None, success: bool = True, request: Request = None) -> "CompletableRequestsResult":
+        return CompletableRequestsResult(success=True, message=message, list=list, request=request)
 
     @staticmethod
     def fail(error: Exception, message: str = ""):

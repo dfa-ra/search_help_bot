@@ -7,3 +7,5 @@ from .show_my_requests_service import ShowMyRequestsService
 from .show_my_selected_requests_service import ShowMySelectedRequestsService
 from .close_request_service import CloseRequestService
 from .open_request_service import OpenRequestService
+from .save_request_file_service import SaveRequestFileService
+from .get_request_file_service import GetRequestFileByIdService

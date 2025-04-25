@@ -1,8 +1,10 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 
+from core.models import FileModel
 
-class MongoDAO:
+
+class MongoDao:
     def __init__(self, collection):
         self.collection = collection
 
@@ -17,8 +19,15 @@ class MongoDAO:
     async def get_file(self, file_id):
         try:
             file_doc = await self.collection.find_one({"_id": ObjectId(file_id)})
+            file = FileModel(
+                file_name=file_doc["file_name"],
+                file_bytes=file_doc["file_bytes"],
+                mime_type=file_doc["mime_type"]
+            )
             if file_doc:
-                return file_doc["file_name"], file_doc["file_bytes"], file_doc["mime_type"]
+                print("return FILEEEEE")
+                return file
+            print("PPUPUPUPUPU")
         except Exception as e:
-            print(f"Error retrieving file: {e}")
-        return None, None, None
+            print("PPUPUPUPUPU2222")
+            raise Exception(e)

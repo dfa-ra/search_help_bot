@@ -3,8 +3,9 @@ from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKe
 from telegram.ext import ContextTypes
 
 from app.service_container import ServiceContainer
-from core.common import CompletableRequestsResult
-from core.services import ShowAllOpenRequestsService, DrawRequestService, SelectRequestService
+from core.common.completable import CompletableRequestsResult, CompletableFileResult
+from core.services import ShowAllOpenRequestsService, DrawRequestService, SelectRequestService, \
+    GetRequestFileByIdService
 
 user_sessions = {}
 
@@ -22,6 +23,7 @@ def get_keyboard():
 async def requests_brainrot_handler(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE,
+        get_request_file_service: GetRequestFileByIdService = Provide[ServiceContainer.get_request_file_service],
         show_all_open_requests_service: ShowAllOpenRequestsService = Provide[ServiceContainer.show_all_open_requests_service],
         draw_request_service: DrawRequestService = Provide[ServiceContainer.draw_request_service],
 ):
@@ -30,6 +32,7 @@ async def requests_brainrot_handler(
         print(requests)
         if not (requests.list == []):
             user_id = update.effective_user.id
+            context.user_data["brainrot"] = True
             user_sessions[user_id] = {
                 "start": True,
                 "list": requests.list,
@@ -37,7 +40,13 @@ async def requests_brainrot_handler(
             }
             index = 0
             result = await draw_request_service.execute(requests.list[index])
-            await update.message.reply_text(result, reply_markup=get_keyboard())
+            file_result: CompletableFileResult = await get_request_file_service.execute(requests.list[index].id)
+            await update.message.reply_document(
+                document=file_result.file.file_bytes,
+                filename=file_result.file.file_name,
+                caption=result,
+                reply_markup=get_keyboard()
+            )
     else:
         await update.message.reply_text(requests.message)
 
@@ -48,6 +57,8 @@ async def request_brainrot_button_handle(
         select_request_service: SelectRequestService = Provide[ServiceContainer.select_request_service],
         draw_request_service: DrawRequestService = Provide[ServiceContainer.draw_request_service],
 ):
+    if "brainrot" not in context.user_data:
+        return
     message = update.message
     user_id = message.from_user.id
     choice = message.text.strip()
@@ -81,4 +92,5 @@ async def request_brainrot_button_handle(
 
     session["index"] = index
     result = await draw_request_service.execute(list_request[index])
+    del context.user_data["brainrot"]
     await message.reply_text(result, reply_markup=get_keyboard())

@@ -1,7 +1,8 @@
 from dependency_injector.wiring import inject, Provide
 
 from app.dao_container import DaoContainer
-from core.common import CompletableRequestsResult
+from core.common.completable import CompletableRequestsResult
+from core.common.decorators import close_dao_sessions
 from core.dao import RequestDao
 from core.services.requests_service.draw_request_service import DrawRequestService
 
@@ -9,6 +10,7 @@ from core.services.requests_service.draw_request_service import DrawRequestServi
 class ShowMyRequestsService:
 
     @inject
+    @close_dao_sessions
     async def execute(
             self,
             telegram_id: int,
