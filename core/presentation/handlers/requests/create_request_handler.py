@@ -5,19 +5,21 @@ from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ContextTypes, ConversationHandler
 
 from app.service_container import ServiceContainer
-from core.common.completable import CompletableRequestsResult
-from core.models import Request, FileModel
+from core.common.completable import SingleResult
+from core.models import RequestModel, FileModel
 from core.services import CreateRequestService, IsIntegerService, SaveRequestFileService, DeleteRequestService
 
 TOPIC, MAIN_TEXT, FILE_DESCRIPTION, DEADLINE, MONEY = range(5)
 
 
+# хендлер команды /create_request
+# позволяет добавлять заявки в режиме диалога с чатом
 @inject
 async def create_requests_handler(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE,
 ):
-    context.user_data["request"] = Request()
+    context.user_data["request"] = RequestModel()
     await update.message.reply_text(" # Создание заявки на решение задания началось.")
     await update.message.reply_text(" # Опишите тему задания...")
     return TOPIC
@@ -97,12 +99,13 @@ async def money_handler(
         await update.message.reply_text("Ты рофлишь?? больше миллиона.. давай ка скинь маленько")
         return MONEY
 
-    request = context.user_data["request"]
+    request: RequestModel = context.user_data["request"]
 
     request.creator_id = update.effective_user.id
     request.is_open = True
+    request.is_complete = False
 
-    result_create: CompletableRequestsResult = await create_request_service.execute(request)
+    result_create: SingleResult = await create_request_service.execute(request)
 
     if result_create.is_success():
 
@@ -112,15 +115,15 @@ async def money_handler(
             await update.message.reply_text(result_create.message)
         else:
             result_add_file = await save_request_file_service.execute(
-                result_create.request.id,
-                result_create.request.creator_id,
+                result_create.result.id,
+                result_create.result.creator_id,
                 document,
             )
             if result_add_file.is_success():
                 await update.message.reply_text(result_create.message)
 
             if result_add_file.is_failure():
-                await delete_request_service.execute(result_create.request.id, result_create.request.creator_id)
+                await delete_request_service.execute(result_create.result.id, result_create.result.creator_id)
                 await update.message.reply_text(result_add_file.message)
 
     else:

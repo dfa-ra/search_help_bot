@@ -4,6 +4,7 @@ import inspect
 
 
 def close_dao_sessions(func):
+    """класс декоратор... для закрытия dao сессий"""
     @wraps(func)
     async def wrapper(*args, **kwargs):
         result = await func(*args, **kwargs)

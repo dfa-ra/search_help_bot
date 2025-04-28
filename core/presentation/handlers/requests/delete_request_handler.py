@@ -6,6 +6,8 @@ from app.service_container import ServiceContainer
 from core.services import DeleteRequestService
 
 
+# хендлер команды /delete_request
+# позволяет удалять заявки
 @inject
 async def delete_request_handler(
         update: Update,
@@ -13,7 +15,7 @@ async def delete_request_handler(
         delete_request_service: DeleteRequestService = Provide[ServiceContainer.delete_request_service],
 ):
     if len(context.args) != 1:
-        await update.message.reply_text("Ввдите номер заявки которую вы хотите удалить")
+        await update.message.reply_text(" # Ввдите номер заявки которую вы хотите удалить")
         return
 
     result = await delete_request_service.execute(int(context.args[0]), update.effective_user.id)

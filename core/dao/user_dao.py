@@ -1,40 +1,41 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Integer
 
-from core.models import User
+from core.models import UserModel
 
 
 class UserDao:
+    """класс отвечающий за взаимодействие с табличкой user-ов"""
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_user(self, user: User):
+    # создать юзера
+    async def create_user(self, user: UserModel):
         self.session.add(user)
         await self.session.commit()
         return user
 
-    async def get_by_id(self, telegram_id: int) -> User | None:
+    # получить юзера по его telegram_id
+    async def get_by_id(self, telegram_id: int) -> UserModel | None:
         result = await self.session.execute(
-            select(User).where(User.telegram_id == telegram_id)
+            select(UserModel).where(UserModel.telegram_id == telegram_id)
         )
         return result.scalar_one_or_none()
 
+    # добавить информацию о юзере
     async def add_user_info(
             self,
-            telegram_id: int,
-            university: str,
-            course: int,
-            direction: str
-    ) -> User | None:
+            user_info: UserModel
+    ) -> UserModel | None:
         result = await self.session.execute(
-            select(User).where(User.telegram_id == telegram_id)
+            select(UserModel).where(UserModel.telegram_id == user_info.telegram_id)
         )
-        user: User = result.scalar_one_or_none()
+        user: UserModel = result.scalar_one_or_none()
 
         if user:
-            user.university = university
-            user.course = course
-            user.direction = direction
+            user.university = user_info.university
+            user.course = user_info.course
+            user.direction = user_info.direction
             await self.session.commit()
             return user
         return None

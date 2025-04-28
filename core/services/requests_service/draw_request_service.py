@@ -1,10 +1,10 @@
-from core.models import Request
+from core.models import RequestModel
 
 
 class DrawRequestService:
     async def execute(
             self,
-            request: Request,
+            request: RequestModel,
     ) -> str:
         str = (f"# Заявка №{request.id}\n\n\n"
                f"Тема: {request.topic}\n\n"

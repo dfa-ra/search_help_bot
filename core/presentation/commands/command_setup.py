@@ -3,6 +3,7 @@ from telegram.ext import CommandHandler, MessageHandler, filters
 from core.presentation.commands.commands_registry import get_bot_commands, get_bot_commands_func, \
     get_list_message_handler
 
+# подключение команд к боту
 
 def register_commands(app):
     commands = get_bot_commands_func()

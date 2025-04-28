@@ -1,7 +1,7 @@
 from dependency_injector.wiring import inject, Provide
 
 from app.dao_container import DaoContainer
-from core.common.completable import CompletableRequestsResult
+from core.common.completable import CompletableResult
 from core.common.decorators import close_dao_sessions
 from core.dao import RequestDao
 
@@ -15,12 +15,12 @@ class OpenRequestService:
             id: int,
             telegram_id: int,
             requests_dao: RequestDao = Provide[DaoContainer.requests_dao],
-    ) -> CompletableRequestsResult:
+    ) -> CompletableResult:
         try:
             result: bool = await requests_dao.open_requests(id, telegram_id)
             if result:
-                return CompletableRequestsResult.ok(f"\/ Заявка №{id} успешно открыта")
+                return CompletableResult.ok(f"\/ Заявка №{id} успешно открыта")
             else:
-                return CompletableRequestsResult.ok(f"!! Заявку №{id} открыть не получилоось, возможно вы не являетесь создателем этой заявки")
+                return CompletableResult.ok(f"!! Заявку №{id} открыть не получилоось, возможно вы не являетесь создателем этой заявки")
         except Exception as e:
-            return CompletableRequestsResult.fail(e, "!! Произошла ошибка при открытии заявки")
+            return CompletableResult.fail(e, "!! Произошла ошибка при открытии заявки")

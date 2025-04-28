@@ -5,13 +5,16 @@ from telegram.ext import CommandHandler, filters, MessageHandler, CallbackQueryH
 from core.presentation.handlers import *
 from core.presentation.commands.command_lists import get_bot_command, get_list_command
 
+# регистрация хендлеров на команды
+
 utils_handler_mapping = {
     "start": register_handler,
     "help": help_handler,
+    "info": info_handler,
 }
 
 users_handler_mapping = {
-    "who_am_i": info_handler
+    "who_am_i": user_info_handler
 }
 
 requests_handler_mapping = {
@@ -38,7 +41,7 @@ message_handler_mapping = [
             DEADLINE: [MessageHandler(filters.TEXT & ~filters.COMMAND, deadline_handler)],
             MONEY: [MessageHandler(filters.TEXT & ~filters.COMMAND, money_handler)],
         },
-        fallbacks=[],
+        fallbacks=[CommandHandler("cancel", cancel_handler)],
     ),
     ConversationHandler(
         entry_points=[CommandHandler('add_information', add_information_handler)],
@@ -49,7 +52,16 @@ message_handler_mapping = [
         },
         fallbacks=[CommandHandler("cancel", cancel_handler)],
     ),
-    MessageHandler(filters.TEXT & ~filters.COMMAND, request_brainrot_button_handle)
+    MessageHandler(filters.TEXT & ~filters.COMMAND, request_brainrot_button_handle),
+    ConversationHandler(
+        entry_points=[CommandHandler('request_completed', request_completed_handler)],
+        states={
+            COMPLETE_REQUEST: [MessageHandler(filters.TEXT & ~filters.COMMAND, complete_request_handler)],
+            BAD_END: [MessageHandler(filters.TEXT & ~filters.COMMAND, request_bad_end_handler)],
+        },
+        fallbacks=[CommandHandler("cancel", cancel_handler)],
+    ),
+
 
 ]
 

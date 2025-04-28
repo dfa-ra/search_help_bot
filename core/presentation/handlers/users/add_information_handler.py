@@ -3,19 +3,22 @@ from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler, ContextTypes
 
 from app.service_container import ServiceContainer
-from core.models import User
+from core.models import UserModel
 from core.services import AddInfoService
 
 UNIVERSITY, COURSE, DIRECTION = range(3)
 
+
+# хендлер команды /add_information
+# позволяет добавлять информацию о пользовтеле в формате диалога с чатом
 async def add_information_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data["user"] = User()
+    context.user_data["user"] = UserModel()
 
     keyboard = [["ИТМО", "Политех", "СПБГУ"]]
     reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
 
     await update.message.reply_text(
-        "Ура, расскажешь о себе! \n\nГде ты учишься?",
+        " # Ура, расскажешь о себе! \n\nГде ты учишься?",
         reply_markup=reply_markup
     )
 
@@ -28,22 +31,22 @@ async def add_university_handler(update: Update, context: ContextTypes.DEFAULT_T
     keyboard = [["1", "2", "3", "4"]]
     reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
 
-    await update.message.reply_text("На каком ты курсе?", reply_markup=reply_markup)
+    await update.message.reply_text(" # На каком ты курсе?", reply_markup=reply_markup)
     return COURSE
 
 
 async def add_course_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["user"].course = int(update.message.text)
 
-    await update.message.reply_text("Какое у тебя направление?", reply_markup=ReplyKeyboardRemove())
+    await update.message.reply_text(" # Какое у тебя направление?", reply_markup=ReplyKeyboardRemove())
     return DIRECTION
 
 
 @inject
 async def add_direction_handler(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
-    add_info_user: AddInfoService = Provide[ServiceContainer.add_info_user],
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE,
+        add_info_user: AddInfoService = Provide[ServiceContainer.add_info_user],
 ):
     context.user_data["user"].direction = update.message.text
 
@@ -56,11 +59,6 @@ async def add_direction_handler(
         direction=user.direction,
     )
 
-    await update.message.reply_text(f"{result.message}")
+    await update.message.reply_text(f"{result.message}", reply_markup=ReplyKeyboardRemove())
     del context.user_data["user"]
-    return ConversationHandler.END
-
-
-async def cancel_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Окей, отменено", reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END

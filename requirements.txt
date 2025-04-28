@@ -3,3 +3,7 @@ SQLAlchemy==2.0.40
 dependency-injector==4.46.0
 python-dotenv==1.0.1
 typing_extensions==4.12.2
+
+motor~=3.7.0
+pymongo~=4.12.0
+alembic~=1.15.2

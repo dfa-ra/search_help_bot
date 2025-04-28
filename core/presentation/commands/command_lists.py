@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Tuple, List
 
+# файл создания команд и добавления текстового описания к ним
 
 @dataclass
 class UtilsCommandsList:
@@ -8,6 +9,7 @@ class UtilsCommandsList:
     commands = [
         ("start", "Запуск бота (информация о боте)"),
         ("help", "Помощь"),
+        ("info", "Информация о том что к чему вообще")
     ]
 
 
@@ -32,6 +34,7 @@ class RequestsCommandsList:
         ("requests_brainrot", "Показывать заявки в виде ленты"),
         ("delete_request", "Удалить заявку"),
         ("select_request", "Выбрать заявку для выполнения"),
+        ("request_completed", "Выбрать сдлеанную заявку и закрыть её")
     ]
 
 @dataclass

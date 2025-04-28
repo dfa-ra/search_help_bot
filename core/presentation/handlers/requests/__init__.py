@@ -7,4 +7,5 @@ from .show_all_open_requests_handler import show_all_open_requests_handler
 from .show_user_request_handler import show_user_requests_handler
 from .show_user_selected_request_handler import show_user_selected_requests_handler
 from .requests_brainrot_handler import *
+from .request_completed_handler import *
 

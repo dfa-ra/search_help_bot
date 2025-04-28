@@ -6,7 +6,8 @@ from app.service_container import ServiceContainer
 from core.presentation.commands.command_lists import get_list_command
 from core.services import HelpService
 
-
+# хендлер команды /help
+# показывает информацию о командах
 @inject
 async def help_handler(
         update: Update,

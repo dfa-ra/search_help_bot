@@ -5,17 +5,21 @@ from core.models import FileModel
 
 
 class MongoDao:
+    """класс для взаимодействия с монго дб"""
     def __init__(self, collection):
         self.collection = collection
 
-    async def save_file(self, file_name, mime_type, file_bytes):
+    # сохранения файла
+    async def save_file(self, file: FileModel):
+
         result = await self.collection.insert_one({
-            "file_name": file_name,
-            "mime_type": mime_type,
-            "file_bytes": file_bytes
+            "file_name": file.file_name,
+            "mime_type": file.mime_type,
+            "file_bytes": file.file_bytes
         })
         return str(result.inserted_id)
 
+    # получение файла из бд
     async def get_file(self, file_id):
         try:
             file_doc = await self.collection.find_one({"_id": ObjectId(file_id)})

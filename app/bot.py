@@ -11,18 +11,16 @@ async def post_init(app):
 
 
 def start_application():
+    # создаём контейнеры
     dao_container = DaoContainer()
+    service_container = ServiceContainer()
 
-    service_container = ServiceContainer(
-
-    )
-
+    # привязываем контейнеры на модули
     dao_container.wire(modules=[
         "core.services.user_services",
         "core.services.requests_service",
         "core.services.utils_service",
     ])
-
     service_container.wire(modules=[
         "core.presentation.handlers.utils",
         "core.presentation.handlers.users",

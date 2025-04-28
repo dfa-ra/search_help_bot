@@ -6,6 +6,7 @@ from core.common.custom_errors import ErrorTypes
 
 @dataclass
 class CompletableResult:
+    """класс обёртка для возврата состояния выполнения сервиса (всё ок или не ок)"""
     success: bool
     message: Optional[str] = None
     error: Optional[Exception] = None

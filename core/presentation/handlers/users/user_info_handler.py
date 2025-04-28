@@ -7,8 +7,10 @@ from core.common.completable import CompletableResult
 from core.services import UserInfoService
 
 
+# хендлер команды /who_am_i
+# показывает информацию о пользователе
 @inject
-async def info_handler(
+async def user_info_handler(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE,
         info_user_service: UserInfoService = Provide[ServiceContainer.user_info_service]

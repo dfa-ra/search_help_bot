@@ -1,3 +1,2 @@
-from .completable_requests_result import CompletableRequestsResult
-from .completable_file_result import CompletableFileResult
 from .completable_result import CompletableResult
+from .single_result import SingleResult

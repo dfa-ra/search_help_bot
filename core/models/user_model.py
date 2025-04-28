@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, BigInteger
 from db.postgress.base import Base
 
 
 @dataclass
-class User(Base):
+class UserModel(Base):
     __tablename__ = 'users'
 
-    telegram_id = Column(Integer, primary_key=True, index=True)
+    telegram_id = Column(BigInteger, primary_key=True, index=True)
     name_tag = Column(String, nullable=False)
     name = Column(String, nullable=False)
     rating = Column(Integer, nullable=True)

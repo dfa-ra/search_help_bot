@@ -4,7 +4,7 @@ from app.dao_container import DaoContainer
 from core.common.completable import CompletableResult
 from core.common.decorators import close_dao_sessions
 from core.dao import UserDao
-from core.models import User
+from core.models import UserModel
 
 
 class UserInfoService:
